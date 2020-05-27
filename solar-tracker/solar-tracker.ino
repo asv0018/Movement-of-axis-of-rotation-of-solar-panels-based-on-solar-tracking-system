@@ -1,3 +1,24 @@
+/*
+ **************************************************************************************************************************************      
+ *                                                    PROGRAMMED BY SHREEVALLABHA (A$V)                                               *
+ **************************************************************************************************************************************
+ * CONNECTION OF CIRCUIT DIAGRAM AND ITS DOCUMENTATION IS HERE :
+ * 
+ *  Connect Bluetooth as :
+ *      Rx of HC-05 to 3th Pin of Arduino Shield
+ *      Tx of HC-05 to 4rd Pin of Arduino Shield
+ *  
+ *  Rain Sensor to Pin 02 of Arduino Shield
+ *  
+ *  DHT11 Sensor to Pin 03 of Arduino Shield
+ *  
+ *  Make sure you connect Vcc to 5V and GND to GND Respectively
+ *  
+ *  Make sure you caliberate the vertical and horizontal angles based on your requirement of the prototype
+ *  
+ *  
+ */
+
 #include <Servo.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
