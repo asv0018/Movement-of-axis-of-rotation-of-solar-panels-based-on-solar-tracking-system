@@ -1,6 +1,13 @@
 #include <Servo.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 #include <dht.h>
+
+#define dht_pin 3
+#define rain_pin 2
+
 dht DHT;
+LiquidCrystal_I2C lcd(0x3F,16,02);
 Servo base;
 Servo top;
 #define DHT11_PIN 7
@@ -9,7 +16,6 @@ const int TL = A0;
 const int TR = A3;
 const int BL = A1;
 const int BR = A2;
-const int RAIN = A3;
 //These are some of the assumptions
 int servov = 45;
 int servoh = 180;
@@ -23,18 +29,18 @@ void setup() {
   Serial.begin(9600);
   base.attach(9);
   top.attach(10);
+  lcd.init();
+  lcd.init();
+  lcd.backlight();
+  pinMode(rain_pin,INPUT);
 }
-
+int published_time = 0;
 void loop() {
-  int chk = DHT.read11(DHT11_PIN);
-  int temp = DHT.temperature;
-  int humidity = DHT.humidity;
+while(!Serial.available()){
   int tl = analogRead(TL);
   int tr = analogRead(TR);
   int bl = analogRead(BL);
   int br = analogRead(BR);
-  int rain = digitalRead(RAIN);
-  
   int avt = (tl + tr) / 2;
   int avd = (bl + br) / 2;
   int avl = (tl + bl) / 2;
@@ -72,10 +78,33 @@ void loop() {
     top.write(servoh);
   }
   delay(15);
-  //display everything:
-
-  Serial.print("horizontal"+String(servoh));
- 
-    Serial.println("verticle"+String(servov));
-
+  int current_time = millis();
+  DHT.read11(dht_pin);
+  int humidity = DHT.humidity;
+  float temperature = DHT.temperature;
+  boolean isRaining = digitalRead(rain_pin);
+  if (humidity > 0 && temperature > 0){
+  lcd.setCursor(0,0);
+  lcd.print("hum:");
+  lcd.setCursor(4,0);
+  lcd.print(String(humidity));
+  lcd.setCursor(7,0);
+  lcd.print("tem:");
+  lcd.setCursor(11,0);
+  lcd.print(String(temperature));
+  lcd.setCursor(0,1);
+  isRaining == false ? lcd.print("RAINING    "):lcd.print("NOT RAINING");
+  if(current_time - published_time >= 10000){
+    publish_data(temperature,humidity,isRaining);
+    published_time = millis();
+    }
+  }
+ }
 }
+void publish_data(float temperature,int humidity,bool isRaining){
+  Serial.print("The Sensor Readings are : \n");
+  Serial.print("temperature : "+String(temperature)+"\n");
+  Serial.print("humidity : "+String(humidity)+"\n");
+  Serial.print("Raining Status : ");
+  isRaining == false ? Serial.print("RAINING\n"):Serial.print("NOT RAINING\n");
+  }
