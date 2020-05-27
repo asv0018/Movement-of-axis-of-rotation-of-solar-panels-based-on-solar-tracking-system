@@ -54,10 +54,28 @@ void setup() {
   lcd.init();
   lcd.backlight();
   pinMode(rain_pin,INPUT);
+  lcd.setCursor(0,0);
+  lcd.print(" Solar Tracker!");
+  delay(3000);
+  lcd.setCursor(0,1);
+  lcd.print("Team:");
+  lcd.setCursor(5,1);
+  lcd.print("Poojesh");
+  delay(1000);
+  lcd.setCursor(5,1);
+  lcd.print("Mani   ");
+  delay(1000);
+  lcd.setCursor(5,1);
+  lcd.print("lorem  ");
+  delay(1000);
+  lcd.setCursor(5,1);
+  lcd.print("Epsum  ");
+  delay(1000);
+  lcd.clear();
 }
 int published_time = 0;
 void loop() {
-while(!Serial.available()){
+//while(!Serial.available()){
   int tl = analogRead(TL);
   int tr = analogRead(TR);
   int bl = analogRead(BL);
@@ -114,13 +132,13 @@ while(!Serial.available()){
   lcd.setCursor(11,0);
   lcd.print(String(temperature));
   lcd.setCursor(0,1);
-  isRaining == false ? lcd.print("RAINING    "):lcd.print("NOT RAINING");
+  isRaining == false ? lcd.print("   RAINING    "):lcd.print("   NOT RAINING");
   if(current_time - published_time >= 10000){
     publish_data(temperature,humidity,isRaining);
     published_time = millis();
     }
   }
- }
+// }
 }
 void publish_data(float temperature,int humidity,bool isRaining){
   Serial.print("The Sensor Readings are : \n");
