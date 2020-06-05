@@ -7,6 +7,7 @@
  *  Connect Bluetooth as :
  *      Rx of HC-05 to 3th Pin of Arduino Shield
  *      Tx of HC-05 to 4rd Pin of Arduino Shield
+ *      (view the bluetooth array pins from right to left)
  *  
  *  Rain Sensor to Pin 02 of Arduino Shield
  *  
